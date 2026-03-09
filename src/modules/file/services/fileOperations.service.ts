@@ -1,12 +1,12 @@
-import  { type Context } from '@/core/registerService.js';
-import ServerError from '@/core/ServerError.class.js';
+import RegisterService, { type Context } from '@/core/registerService.js';
+import ServerError from '@/core/serverError.class.js';
 import { upload, deleteFile as deleteFileFromStorage } from '@/service/file-storage/index.js';
 import Event from '@/service/event/index.js';
 import env from '@/config/env.js';
 
 
 
-export async function registerNewFile(
+async function registerNewFileService(
   { database:db }: Context,
   { filePath, _status = 'pending' }: {filePath:string, _status?: string},
 ) {
@@ -19,8 +19,7 @@ export async function registerNewFile(
   return file;
 }
 
-
-export async function hardDeleteFile({ database:db }: Context, { id }: { id: string }) {
+async function hardDeleteFileService({ database:db }: Context, { id }: { id: string }) {
   const file = await db.queryOne('SELECT id, key FROM files WHERE id = $1', [id]);
   if (!file) return;
   await db.query('DELETE FROM files WHERE id = $1', [id]);
@@ -29,7 +28,7 @@ export async function hardDeleteFile({ database:db }: Context, { id }: { id: str
 
 
 
-export async function updateFileStatus({ database:db }: Context, { id, status }: { id: string, status: string }) {
+async function updateFileStatusService({ database:db }: Context, { id, status }: { id: string, status: string }) {
   const file = await db.queryOne('SELECT id, key, _status FROM files WHERE id = $1', [id]);
   if (!file) throw new ServerError('NOT_FOUND', 'File not found');
   if (file._status === status) return file;
@@ -38,12 +37,19 @@ export async function updateFileStatus({ database:db }: Context, { id, status }:
 }
 
 
-export async function saveFile(ctx: Context, { id }: { id: string }) {
+async function saveFileService(ctx: Context, { id }: { id: string }) {
   const file = await updateFileStatus(ctx, { id, status: 'saved' });
   Event.emit('file:saved', file);
 }
 
 
-export async function deleteFile(ctx: Context, { id }: { id: string }) {
+async function deleteFileService(ctx: Context, { id }: { id: string }) {
   return await updateFileStatus(ctx, { id, status: 'deleted' });
 }
+
+
+export const registerNewFile = RegisterService(registerNewFileService);
+export const hardDeleteFile = RegisterService(hardDeleteFileService);
+export const updateFileStatus = RegisterService(updateFileStatusService);
+export const saveFile = RegisterService(saveFileService);
+export const deleteFile = RegisterService(deleteFileService);

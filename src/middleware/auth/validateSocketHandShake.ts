@@ -1,4 +1,4 @@
-import ServerError from '@/core/ServerError.class.js';
+import ServerError from '@/core/serverError.class.js';
 import { decodeJWTToken } from '@/utility/token.js';
 import { Socket } from 'socket.io';
 import { TokenTypes } from '@/config/constant.js';

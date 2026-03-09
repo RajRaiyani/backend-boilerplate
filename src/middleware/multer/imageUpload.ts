@@ -1,7 +1,7 @@
 import path from 'path';
 import multer from 'multer';
 import storage from './storage.js';
-import ServerError from '@/core/ServerError.class.js';
+import ServerError from '@/core/serverError.class.js';
 import type { Request } from 'express';
 
 const imageFileExtensions = ['jpg', 'jpeg', 'png', 'webp', 'tiff', 'bmp', 'svg', 'ico', 'heif', 'heic'];

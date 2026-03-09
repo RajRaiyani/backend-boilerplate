@@ -2,7 +2,7 @@ import fsp from 'fs/promises';
 import fs from 'fs';
 import path from 'path';
 import env from '@/config/env.js';
-import ServerError from '@/core/ServerError.class.js';
+import ServerError from '@/core/serverError.class.js';
 import sharp from 'sharp';
 
 const fileStoragePath = env.fileStoragePath;

@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import  { ErrorCodes } from '@/config/constant.js';
-import { ValidationError } from '@/middleware/requestValidator.js';
+import ValidationError from '@/core/validationError.class.js';
 import Logger from '@/service/logger/index.js';
-import ServerError from '@/core/ServerError.class.js';
+import ServerError from '@/core/serverError.class.js';
 
 
 const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
