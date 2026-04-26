@@ -1,2 +1,2 @@
-export * from './services/fileOperations.service.js';
-export * from './services/imageFile.service.js';
+export * from './services/file-oprations.service.js';
+export * from './services/image.service.js';

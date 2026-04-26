@@ -1,16 +1,15 @@
 import http from 'http';
-import env from './config/env.js';
+import env from './shared/configs/env.js';
 import app from './app.js';
-import Logger from './service/logger/index.js';
+import Logger from './shared/configs/logger.js';
 import Socket from '@/socket.js';
 
-const { port, env: envName } = env;
 
 const server = http.createServer(app);
 
 Socket.init(server);
 
-server.listen(port, () => {
-  Logger.info(`Server is running on port ${port} in ${envName} mode`);
+server.listen(env.PORT, () => {
+    Logger.info(`Server is running on port ${env.PORT} in ${env.ENV} mode`);
 });
 
