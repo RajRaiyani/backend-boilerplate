@@ -8,12 +8,13 @@ import RedisClient from './shared/configs/redis.js';
 
 import env from './shared/configs/env.js';
 
-
 const app = express();
 
-app.use(morgan(':method :url Status : :status, Time taken: :response-time ms', {
-    stream: { write: (message) => Logger.info(message) },
-}));
+app.use(
+    morgan(':method :url Status : :status, Time taken: :response-time ms', {
+        stream: { write: (message) => Logger.info(message) },
+    }),
+);
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
@@ -40,15 +41,15 @@ app.get('/ping', (req, res) => {
 
 app.use('/', appRoute);
 
-
 // Error handler
 app.use(errorHandler);
 
-RedisClient.connect().then(() => {
-    Logger.info('Redis connected successfully ✅');
-}).catch((error) => {
-    Logger.error('Redis connection error', error);
-});
-
+RedisClient.connect()
+    .then(() => {
+        Logger.info('Redis connected successfully ✅');
+    })
+    .catch((error) => {
+        Logger.error('Redis connection error', error);
+    });
 
 export default app;

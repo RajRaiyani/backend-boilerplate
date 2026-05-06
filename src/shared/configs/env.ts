@@ -38,6 +38,12 @@ const envSchema = z.object({
     SMTP_PORT: z.coerce.number().int().positive().max(65535),
     SMTP_USER: z.string(),
     SMTP_PASSWORD: z.string(),
+
+    // AWS
+    AWS_REGION: z.string(),
+    AWS_ACCESS_KEY_ID: z.string(),
+    AWS_SECRET_ACCESS_KEY: z.string(),
+    AWS_S3_BACKUP_BUCKET: z.string(),
 });
 
 const { data: env, error } = envSchema.safeParse(process.env);

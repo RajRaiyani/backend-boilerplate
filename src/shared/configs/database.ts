@@ -2,8 +2,7 @@ import { Pool, types } from 'pg';
 import type { PoolConfig } from 'pg';
 import env from '@/shared/configs/env.js';
 
-
-function parseDatabaseUrl(databaseUrl: string) {
+export function parseDatabaseUrl(databaseUrl: string) {
     const url = new URL(databaseUrl);
 
     const host = url.hostname.trim();
@@ -29,12 +28,8 @@ function parseDatabaseUrl(databaseUrl: string) {
 
 const dbEnvConfig = parseDatabaseUrl(env.DATABASE_URL);
 
-if (
-    !dbEnvConfig.host ||
-  !dbEnvConfig.port ||
-  !dbEnvConfig.user ||
-  !dbEnvConfig.database
-) throw new Error('Invalid database URL in Database service');
+if (!dbEnvConfig.host || !dbEnvConfig.port || !dbEnvConfig.user || !dbEnvConfig.database)
+    throw new Error('Invalid database URL in Database service');
 
 const dbConfig: PoolConfig = {
     user: dbEnvConfig.user,
@@ -62,6 +57,4 @@ types.setTypeParser(1700, (val) => parseFloat(val));
 // Type OID 1082 = DATE in PostgreSQL
 types.setTypeParser(1082, (value) => value); // returns 'YYYY-MM-DD' string as-is
 
-
 export const pool = new Pool(dbConfig);
-
